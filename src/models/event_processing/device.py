@@ -1,5 +1,8 @@
+import hashlib
+
 from device_status import DeviceStatus
 from pydantic import BaseModel
+
 
 class Device(BaseModel):
     id: str
@@ -7,5 +10,10 @@ class Device(BaseModel):
     device_status: DeviceStatus
     device_age: int
 
-    def get_hash(self, mission_name: str) -> str:
-        pass
+    def get_hash(self, fecha: str, mision: str, tipo_dispositivo: str, estado_dispositivo: str) -> str:
+        instancia_hash = hashlib.sha256()
+        instancia_hash.update(fecha.encode())
+        instancia_hash.update(mision.encode())
+        instancia_hash.update(tipo_dispositivo.encode())
+        instancia_hash.update(estado_dispositivo.encode())
+        return instancia_hash.hexdigest()
