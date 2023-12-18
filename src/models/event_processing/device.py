@@ -17,9 +17,4 @@ class Device(BaseModel):
         hash.update(self.device_type.encode())
         hash.update(self.device_status.value.encode())
         return hash.hexdigest()
-        instancia_hash = hashlib.sha256()
-        instancia_hash.update(fecha.encode())
-        instancia_hash.update(mision.encode())
-        instancia_hash.update(tipo_dispositivo.encode())
-        instancia_hash.update(estado_dispositivo.encode())
-        return instancia_hash.hexdigest()
+
