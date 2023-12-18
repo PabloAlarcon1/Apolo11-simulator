@@ -10,7 +10,13 @@ class Device(BaseModel):
     device_status: DeviceType
     device_age: int
 
-    def get_hash(self, fecha: str, mision: str, tipo_dispositivo: str, estado_dispositivo: str) -> str:
+    def get_hash(self, mission_date: str, mission_name: str) -> str:
+        hash = hashlib.sha256()
+        hash.update(mission_date.encode())
+        hash.update(mission_name.encode())
+        hash.update(self.device_type.encode())
+        hash.update(self.device_status.value.encode())
+        return hash.hexdigest()
         instancia_hash = hashlib.sha256()
         instancia_hash.update(fecha.encode())
         instancia_hash.update(mision.encode())
