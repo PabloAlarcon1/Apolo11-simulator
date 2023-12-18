@@ -7,7 +7,7 @@ from src.models.event_processing.device_status import DeviceType
 class GenerateHashTest(TestCase):
 
     def test_generate_hash_galaxy_two(self):
-        hash_expected = "1241903bf6723e9c4c769070e38059db46fe3cc4a8189a742c99fbab383234c7"
+        hash_expected = "45996c6220dce5499a6ceb263e31068757a16d46c0a53f7160c1f2f34bee9a77"
 
         device: Device = Device(
             id="1234",
@@ -16,6 +16,6 @@ class GenerateHashTest(TestCase):
             device_age=1
         )
 
-        hash_obtained = device.get_hash("12122023102202", "GalaxyTwo", "nave", "good")
+        hash_obtained = device.get_hash("12122023102202", "GalaxyTwo")
 
         self.assertEqual(hash_obtained, hash_expected)
