@@ -17,10 +17,11 @@ class ReportBuilder:
                 for line in content_file:
                     if line != '':
                         content_merge += line.strip() + "\n"
+            cls.move_files(origin_path, 'backup', file) # TODO: get target path from config file
         return content_merge
 
-    def move_files(self, target_path: Path) -> None:
-        pass
+    def move_files(self, origin_path: str, target_path: Path, filename: str) -> None:
+        Path(origin_path + '/' + filename).rename(target_path + '/' + filename)
 
     def show_report():
         pass
