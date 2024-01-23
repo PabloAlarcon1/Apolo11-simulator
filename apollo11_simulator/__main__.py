@@ -7,7 +7,7 @@ import argparse
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generador de eventos y reportes en la línea de comandos.')
 
-    parser.add_argument('operation', choices=['generate-data', 'generate-reports'],
+    parser.add_argument('operation', choices=['generate-events', 'generate-report'],
                         help='Tipo de operacion a realizar: generar eventos, generar reportes')
 
     args = parser.parse_args()
