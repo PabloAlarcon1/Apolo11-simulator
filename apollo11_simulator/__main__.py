@@ -12,14 +12,15 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    if args.operation == 'generate-data':
-        print("running generate data mode...")
-        # si es en modo generador
-        # event_manager = EventManager(target_path='devices', frequency_seconds=3, range_of_files=(7, 10))
-        # event_manager()
-    elif args.operation == 'generate-reports':
-        print("running generate reporter mode...")
-        # si es en modo reporter
-        # reporter method
-        # reporter = ReportBuilder.from_path('')
-        # reporter.show_reporter()
+match args.operation:
+        case 'generate-data':
+            print("running generate data mode...")
+            # si es en modo generador
+            # event_manager = EventManager(target_path='devices', frequency_seconds=3, range_of_files=(7, 10))
+            # event_manager()
+        case 'generate-reports':
+            print("running generate reporter mode...")
+            # si es en modo reporter
+            # reporter method
+            # reporter = ReportBuilder.from_path('')
+            # reporter.show_reporter()
