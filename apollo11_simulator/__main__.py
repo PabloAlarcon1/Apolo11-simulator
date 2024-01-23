@@ -3,11 +3,12 @@ from apollo11_simulator.models.report_processing.report_builder import ReportBui
 
 #logica argparse
 #si es en modo generador
-event_manager = EventManager(target_path = 'devices', frequency_seconds = 3, range_of_files = (1, 3))
-event_manager()
+#event_manager = EventManager(target_path = 'devices', frequency_seconds = 3, range_of_files = (1, 3))
+#event_manager()
 
 #si es en modo reporter
 
 #reporter method
-#reporter = ReportBuilder.from_path('')
-#reporter.show_reporter()
+reporter = ReportBuilder.read_events('devices')
+
+reporter.show_report()
