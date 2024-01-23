@@ -14,13 +14,10 @@ if __name__ == '__main__':
 
     match args.operation:
             case 'generate-events':
-                print("running generate data mode...")
-                # si es en modo generador
-                # event_manager = EventManager(target_path='devices', frequency_seconds=3, range_of_files=(7, 10))
-                # event_manager()
+                print('Running in "generate events" mode')
+                event_manager = EventManager(target_path='devices', frequency_seconds=3, range_of_files=(7, 10))
+                event_manager()
             case 'generate-report':
-                print("running generate reporter mode...")
-                # si es en modo reporter
-                # reporter method
+                print('Running in "generate report" mode')
                 # reporter = ReportBuilder.from_path('')
                 # reporter.show_reporter()
