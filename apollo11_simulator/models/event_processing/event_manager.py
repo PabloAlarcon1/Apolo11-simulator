@@ -1,6 +1,7 @@
-from typing import Any, List, Tuple
+from typing import Any, Dict, List, Tuple
 from pydantic import BaseModel, Field, field_validator
-from apollo11_simulator.models.event_processing.mission import ColonyMoon, GalaxyTwo, OrbitOne, Unkn, VacMars
+from apollo11_simulator.models.event_processing.mission import (
+    ColonyMoon, GalaxyTwo, OrbitOne, Unkn, VacMars)
 from apollo11_simulator.models.event_processing.device import Device
 from apollo11_simulator.models.event_processing.device_status import DeviceStatus
 from apollo11_simulator.models.event_processing.service_type import ServiceType
@@ -9,9 +10,11 @@ import random
 from pathlib import Path
 from time import sleep
 
+from apollo11_simulator.utils import Utils
+
 class EventManager(BaseModel):
     '''
-    Generate event files in yaml format by calling the instance of the class:
+    Generate event files in yaml format by calling the instance of the class.
 
     Example:
 
@@ -56,7 +59,7 @@ class EventManager(BaseModel):
 
         return values
 
-    def __random_device(self, mission_class) -> Device:
+    def __random_device(self, mission_class, devices_list: List[Tuple[str, str]]) -> Device:
         '''
         Return a random device of type Device class
 
@@ -64,12 +67,12 @@ class EventManager(BaseModel):
         -----------
         - mission_class: Class which inherits from Mission class, if it is Unkn class
         then it will return a Device object with hardcoded values equal to "unknown"
+        - devices_list: List of devices to select randomly
 
         Returns:
         --------
         Object of Device type
         '''
-
         if mission_class is Unkn:
             return Device(
                 device_type = 'unknown',
@@ -78,6 +81,9 @@ class EventManager(BaseModel):
                 device_description = 'unknown'
             )
         else:
+            random_device: Tuple = random.choice(devices_list)
+            random_device_type, random_device_description = random_device
+
             return Device(
                 device_status = random.choice([
                     DeviceStatus.EXCELLENT,
@@ -87,18 +93,19 @@ class EventManager(BaseModel):
                     DeviceStatus.WARNING,
                     DeviceStatus.UNKNOWN
                 ]),
-                device_type = 'd',
-                device_description = 'any description',
+                device_type = random_device_type,
+                device_description = random_device_description,
                 device_age = random.randint(2, 20)
             )
 
-    def __generate_files(self, epoch: int) -> None:
+    def __generate_files(self, epoch: int, devices_list: List[Tuple[str, str]]) -> None:
         '''
         Generate events in yaml format
 
         Parameters:
         -----------
         - epoch: Current iteration
+        - devices_list: List of devices
 
         Returns:
         --------
@@ -111,7 +118,8 @@ class EventManager(BaseModel):
 
         number_of_files: int = random.randint(min_files, max_files)
 
-        mission_classes: List = random.choices([ColonyMoon, OrbitOne, GalaxyTwo, VacMars, Unkn], k = number_of_files)
+        mission_classes: List = random.choices(
+            [ColonyMoon, OrbitOne, GalaxyTwo, VacMars, Unkn], k = number_of_files)
 
         # Create "devices" directory if it does not exist
         device_path = Path(self.target_path)
@@ -151,7 +159,8 @@ class EventManager(BaseModel):
             }
 
             # Create an instance based on one of the dictionary keys.
-            mission_instance = mission_class(**mission_params[mission_class], device = self.__random_device(mission_class))
+            mission_instance = mission_class(**mission_params[mission_class],
+                                             device = self.__random_device(mission_class, devices_list))
 
             name: Path = device_path.joinpath(f'{str(mission_instance)}-{epoch}{i}.log')
 
@@ -160,9 +169,11 @@ class EventManager(BaseModel):
     def __call__(self) -> Any:
         try:
             epoch: int = 0
+            devices_data: Dict[str, str] = Utils.read_json('devices_list.json')
+            devices_list: List[Tuple[str, str]] = list(devices_data.items())
 
             while True:
-                self.__generate_files(epoch)
+                self.__generate_files(epoch, devices_list)
                 sleep(self.frequency_seconds)
                 epoch += 1
 
