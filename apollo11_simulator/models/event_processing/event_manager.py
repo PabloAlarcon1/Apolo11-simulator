@@ -169,7 +169,7 @@ class EventManager(BaseModel):
     def __call__(self) -> Any:
         try:
             epoch: int = 0
-            devices_data: Dict[str, str] = Utils.read_json('devices_list.json')
+            devices_data: Dict[str, str] = Utils.read_json('input_data/devices_list.json')
             devices_list: List[Tuple[str, str]] = list(devices_data.items())
 
             while True:
