@@ -1,13 +1,23 @@
+import argparse
+
 from apollo11_simulator.models.event_processing.event_manager import EventManager
-from apollo11_simulator.models.report_processing.report_builder import ReportBuilder
+# from apollo11_simulator.models.report_processing.report_builder import ReportBuilder
 
-#logica argparse
-#si es en modo generador
-event_manager = EventManager(target_path = 'devices', frequency_seconds = 3, range_of_files = (1, 3))
-event_manager()
+# logica argparse
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Generador de eventos y reportes en la línea de comandos.')
 
-#si es en modo reporter
+    parser.add_argument('operation', choices=['generate-events', 'generate-report'],
+                        help='Tipo de operacion a realizar: generar eventos, generar reportes')
 
-#reporter method
-#reporter = ReportBuilder.from_path('')
-#reporter.show_reporter()
+    args = parser.parse_args()
+
+    match args.operation:
+            case 'generate-events':
+                print('Running in "generate events" mode')
+                event_manager = EventManager(target_path='devices', frequency_seconds=3, range_of_files=(7, 10))
+                event_manager()
+            case 'generate-report':
+                print('Running in "generate report" mode')
+                # reporter = ReportBuilder.from_path('')
+                # reporter.show_reporter()
