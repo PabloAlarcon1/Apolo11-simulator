@@ -23,12 +23,14 @@ class EventManager(BaseModel):
 
     Attributes:
     ----------
-    - target_path: Directory name, it will be created if it does not exist
+    - input_data_file: Path to directory with test data
+    - target_path: Path to directory that will contain event files. It will be created if it does not exist
     - frequency_seconds: Frequency in seconds at which event files will be generated
     - range_of_files: A tuple with 2 values indicating the minimum and maximun number
     of events to generate in each iteration
     '''
 
+    input_data_file: str = Field(min_length = 1)
     target_path: str = Field(min_length = 1)
     frequency_seconds: int = Field(gt = 0)
     range_of_files: Tuple[int, int]
@@ -73,11 +75,11 @@ class EventManager(BaseModel):
         --------
         Object of Device type
         '''
+
         if mission_class is Unkn:
             return Device(
                 device_type = 'unknown',
                 device_status = DeviceStatus.UNKNOWN,
-                device_age = 'unknown',
                 device_description = 'unknown'
             )
         else:
@@ -94,18 +96,17 @@ class EventManager(BaseModel):
                     DeviceStatus.UNKNOWN
                 ]),
                 device_type = random_device_type,
-                device_description = random_device_description,
-                device_age = random.randint(2, 20)
+                device_description = random_device_description
             )
 
-    def __generate_files(self, epoch: int, devices_list: List[Tuple[str, str]]) -> None:
+    def __generate_files(self, epoch: int, input_data: Dict) -> None:
         '''
         Generate events in yaml format
 
         Parameters:
         -----------
         - epoch: Current iteration
-        - devices_list: List of devices
+        - input_data: Dictionary of data simulation
 
         Returns:
         --------
@@ -121,36 +122,42 @@ class EventManager(BaseModel):
         mission_classes: List = random.choices(
             [ColonyMoon, OrbitOne, GalaxyTwo, VacMars, Unkn], k = number_of_files)
 
+        # Transforming dictionary of devices to list of tuples
+        devices_list: List[Tuple[str, str]] = list(input_data.get('devices').items())
+
         # Create "devices" directory if it does not exist
         device_path = Path(self.target_path)
         device_path.mkdir(exist_ok = True)
 
         for i, mission_class in enumerate(mission_classes, 1):
 
-            # Params for each mission class whose keys correspond to the class
+            random_budget: int = random.randint(*input_data.get('budget'))
+
+            # Params for each mission class whose keys correspond to the class name
             mission_params = {
                 ColonyMoon: {
                     'date': datetime.now(),
-                    'budget': 2,
-                    'size': 5
+                    'budget': random_budget,
+                    'size': random.randint(*input_data.get('size'))
                 },
                 OrbitOne: {
-                    'date' : datetime.now(),
-                    'budget' : 2,
-                    'satellite_name' : 'OpenAI',
-                    'service_type' : ServiceType.UPDATE
+                    'date': datetime.now(),
+                    'budget': random_budget,
+                    'satellite_name': random.choice(input_data.get('satellite_names')),
+                    'service_type': random.choice(
+                        [ServiceType.UPDATE, ServiceType.REPARATION, ServiceType.REPLACEMENT]
+                    )
                 },
                 GalaxyTwo: {
                     'date': datetime.now(),
-                    'budget': 2,
-                    'distance_ly': 15,
-                    'galaxy_name': 'Orion'
+                    'budget': random_budget,
+                    'galaxy_name': random.choice(input_data.get('galaxy_names')),
                 },
                 VacMars: {
                     'date': datetime.now(),
-                    'budget': 2,
-                    'number_of_passengers': 3,
-                    'ticket_price': 15
+                    'budget': random_budget,
+                    'number_of_passengers': random.randint(*input_data.get('number_of_passengers')),
+                    'ticket_price': random.randint(*input_data.get('ticket_price'))
                 },
                 Unkn: {
                     'date': datetime.now(),
@@ -158,7 +165,7 @@ class EventManager(BaseModel):
                 }
             }
 
-            # Create an instance based on one of the dictionary keys.
+            # Create an instance based on one of the dictionary keys
             mission_instance = mission_class(**mission_params[mission_class],
                                              device = self.__random_device(mission_class, devices_list))
 
@@ -169,11 +176,9 @@ class EventManager(BaseModel):
     def __call__(self) -> Any:
         try:
             epoch: int = 0
-            devices_data: Dict[str, str] = Utils.read_json('input_data/devices_list.json')
-            devices_list: List[Tuple[str, str]] = list(devices_data.items())
-
+            input_data: Dict = Utils.read_json(Path(self.input_data_file))
             while True:
-                self.__generate_files(epoch, devices_list)
+                self.__generate_files(epoch, input_data)
                 sleep(self.frequency_seconds)
                 epoch += 1
 
@@ -181,3 +186,4 @@ class EventManager(BaseModel):
             print('The process was interrupted!')
         except Exception as e:
             print(str(e))
+            raise e
