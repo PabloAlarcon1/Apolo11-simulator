@@ -1,7 +1,7 @@
 import argparse
 
 from apollo11_simulator.models.event_processing.event_manager import EventManager
-# from apollo11_simulator.models.report_processing.report_builder import ReportBuilder
+from apollo11_simulator.models.report_processing.report_builder import ReportBuilder
 
 # logica argparse
 if __name__ == '__main__':
@@ -19,5 +19,5 @@ if __name__ == '__main__':
                 event_manager()
             case 'generate-report':
                 print('Running in "generate report" mode')
-                # reporter = ReportBuilder.from_path('')
-                # reporter.show_reporter()
+                reporter = ReportBuilder.read_events('devices')
+                reporter()
