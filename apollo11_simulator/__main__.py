@@ -15,7 +15,7 @@ if __name__ == '__main__':
     match args.operation:
             case 'generate-events':
                 print('Running in "generate events" mode')
-                event_manager = EventManager(target_path='devices', frequency_seconds=3, range_of_files=(7, 10))
+                event_manager = EventManager(input_data_file = 'input_data/simulation.json', target_path='devices', frequency_seconds=3, range_of_files=(7, 10))
                 event_manager()
             case 'generate-report':
                 print('Running in "generate report" mode')
