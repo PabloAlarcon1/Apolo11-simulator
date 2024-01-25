@@ -1,0 +1,10 @@
+event_params:
+  frecuency_seconds: 2
+  input_data_file: input_data/simulation.json
+  target_path: devices
+  range_of_files:
+    min: 2
+    max: 5
+
+
+
