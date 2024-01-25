@@ -6,6 +6,9 @@ import pandas as pd
 from apollo11_simulator.models.report_processing.task_calculator import TaskCalculator
 from apollo11_simulator.utils import Utils
 from yaml import YAMLError
+from apollo11_simulator.config.logger import Logger
+
+logger = Logger().get_logger(module_name='ReportBuilder', log_location='logs', logger_level=logging.INFO)
 
 class ReportBuilder:
 
@@ -34,10 +37,10 @@ class ReportBuilder:
         try:
             event = Utils.read_yaml(filename)
         except YAMLError:
-            print(f'File {filename} was ignored')
+            logger.error(f'File {filename} was ignored')
             event = None
         except Exception as exc:
-            print('Report builder has stopped', str(exc))
+            logger.error('Report builder has stopped', str(exc))
             exit(-1)
 
         return event
@@ -65,5 +68,5 @@ class ReportBuilder:
                     file.write('='*100)
                     file.writelines(line_jump)
 
-        print('Moving files...')
+        logger.info('Moving files...')
         shutil.move(self.__origin_path, self.__target_path)
