@@ -10,7 +10,7 @@ import random
 from pathlib import Path
 from time import sleep
 from apollo11_simulator.utils import Utils
-from apollo11_simulator.config.logger import Logger
+from apollo11_simulator.logger import Logger
 
 logger = Logger.get_logger("event_manager")
 

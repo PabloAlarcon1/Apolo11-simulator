@@ -2,12 +2,13 @@ import argparse
 from apollo11_simulator.models.event_processing.event_manager import EventManager
 from apollo11_simulator.models.report_processing.report_builder import ReportBuilder
 from apollo11_simulator.config import config
-from apollo11_simulator.config.logger import Logger
+from apollo11_simulator.logger import Logger
 
 logger = Logger.get_logger("__main__")
 
 # logica argparse
 if __name__ == '__main__':
+
     event_params = config["event_params"]
 
     parser = argparse.ArgumentParser(description='Generador de eventos y reportes en la línea de comandos.')

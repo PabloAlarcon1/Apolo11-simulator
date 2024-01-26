@@ -2,14 +2,16 @@ from datetime import datetime
 import logging
 from logging import handlers
 from pathlib import Path
+from apollo11_simulator.config import config
 
 class Logger:
+
     @staticmethod
     def get_logger(
         module_name: str,
-        log_location: str = 'logs',
-        log_format: str = '%Y%m%d%H%M%S',
-        logger_level: int = logging.INFO
+        log_location: str = config["logging"]["log_location"],
+        log_format: str = config["logging"]["log_format"],
+        logger_level: int = config["logging"]["logger_level"],
     ):
         '''
         Custom logger to use in the app

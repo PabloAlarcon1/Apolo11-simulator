@@ -8,7 +8,7 @@ import pandas as pd
 from apollo11_simulator.models.report_processing.task_calculator import TaskCalculator
 from apollo11_simulator.utils import Utils
 from yaml import YAMLError
-from apollo11_simulator.config.logger import Logger
+from apollo11_simulator.logger import Logger
 
 logger = Logger.get_logger("report_builder")
 

@@ -6,3 +6,9 @@ event_params:
   range_of_files:
     min: 2
     max: 5
+
+logging:
+  log_location: logs
+  log_format: "%Y%m%d%H%M%S"
+  log_format: sss
+  logger_level: 20
