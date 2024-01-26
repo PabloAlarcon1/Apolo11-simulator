@@ -10,5 +10,7 @@ event_params:
 logging:
   log_location: logs
   log_format: "%Y%m%d%H%M%S"
-  log_format: sss
   logger_level: 20
+
+utils:
+  custom_format : "%d%m%y%H%M%S"
