@@ -1,9 +1,8 @@
+# from apollo11_simulator.utils import Utils
+from pathlib import Path
 from typing import Dict
 
 import yaml
-
-# from apollo11_simulator.utils import Utils
-from pathlib import Path
 
 parent_dir = Path(__file__).parent
 

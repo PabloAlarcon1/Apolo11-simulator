@@ -1,8 +1,10 @@
-from datetime import datetime
 import logging
+from datetime import datetime
 from logging import handlers
 from pathlib import Path
+
 from apollo11_simulator.config import config
+
 
 class Logger:
 
@@ -19,12 +21,15 @@ class Logger:
         Parameters:
         ----------
         - module_name: name of the application or floe that is running
-        - logger_level: logger level - CRITICAL=50, ERROR=40, WARNING=30, INFO=20, DEBUG=10, NOTSET=0
+        - logger_level: logger level - CRITICAL=50,
+        ERROR=40, WARNING=30, INFO=20, DEBUG=10, NOTSET=0
         '''
 
         log_path: Path = Path(log_location)
         log_path.mkdir(exist_ok = True)
-        log_save = log_path.joinpath(f'{datetime.now().strftime(log_format)}_{module_name}.log')
+        log_save = log_path.joinpath(
+            f'{datetime.now().strftime(log_format)}_{module_name}.log'
+        )
 
         logger = None
         try:
@@ -33,13 +38,16 @@ class Logger:
 
             format = logging.Formatter(
                 '%(asctime)s - [%(levelname)s] - [%(name)s]: %(message)s')
-            loginStreamHandler = logging.StreamHandler()
-            loginStreamHandler.setFormatter(format)
-            logger.addHandler(loginStreamHandler)
+            login_stream_handler = logging.StreamHandler()
+            login_stream_handler.setFormatter(format)
+            logger.addHandler(login_stream_handler)
 
-            fileHandler = handlers.RotatingFileHandler(log_save, maxBytes = (1048576 * 5), backupCount = 7)
-            fileHandler.setFormatter(format)
-            logger.addHandler(fileHandler)
+            file_handler = handlers.RotatingFileHandler(log_save,
+                                                       maxBytes = (1048576 * 5),
+                                                       backupCount = 7
+                                                       )
+            file_handler.setFormatter(format)
+            logger.addHandler(file_handler)
 
         except Exception:
             logger = None

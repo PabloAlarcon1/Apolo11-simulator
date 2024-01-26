@@ -1,6 +1,8 @@
 from json import JSONDecodeError
 from typing import Any, Callable
+
 from yaml import YAMLError
+
 from apollo11_simulator.logger import Logger
 
 logger = Logger.get_logger("decorators")

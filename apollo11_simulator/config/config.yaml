@@ -13,4 +13,4 @@ logging:
   logger_level: 20
 
 utils:
-  custom_format : "%d%m%y%H%M%S"
+  custom_format: "%d%m%y%H%M%S"
