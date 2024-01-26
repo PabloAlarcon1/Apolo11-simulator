@@ -9,8 +9,10 @@ from datetime import datetime
 import random
 from pathlib import Path
 from time import sleep
-
 from apollo11_simulator.utils import Utils
+from apollo11_simulator.config.logger import Logger
+
+logger = Logger.get_logger("event_manager")
 
 class EventManager(BaseModel):
     '''
@@ -113,7 +115,7 @@ class EventManager(BaseModel):
         None
         '''
 
-        print('Generating files...')
+        logger.info('Generating files...')
 
         min_files, max_files = self.range_of_files
 
@@ -183,7 +185,7 @@ class EventManager(BaseModel):
                 epoch += 1
 
         except KeyboardInterrupt:
-            print('The process was interrupted!')
+            logger.exception('The process was interrupted!')
         except Exception as e:
-            print(str(e))
+            logger.exception(f'An unexpected error ocurred: {str(e)}')
             raise e
