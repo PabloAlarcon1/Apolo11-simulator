@@ -14,6 +14,8 @@ from apollo11_simulator.logger import Logger
 
 logger = Logger.get_logger("event_manager")
 
+logger = Logger.get_logger("event_manager")
+
 class EventManager(BaseModel):
     '''
     Generate event files in yaml format by calling the instance of the class.
