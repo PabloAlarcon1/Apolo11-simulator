@@ -18,11 +18,31 @@ class Mission(BaseModel):
     @computed_field
     @property
     def mission(self) -> str:
+        '''
+                To return the name of the class
+
+                Parameters:
+                -----------
+
+                Returns:
+                --------
+                    str
+                '''
         return self.__class__.__name__
 
     @computed_field
     @property
     def hash(self) -> str:
+        '''
+                Overrides hash property in order to disable hash generation
+
+                Parameters:
+                -----------
+
+                Returns:
+                --------
+                    str
+                '''
         hash = hashlib.sha256()
         hash.update(Utils.transform_date(self.date).encode())
         hash.update(self.mission.encode())
@@ -34,8 +54,19 @@ class Mission(BaseModel):
         return 'APL'
 
     def generate_event(self, name: str) -> None:
+        '''
+                To create a file with a name received to parameter
+
+                Parameters:
+                name
+
+                Returns:
+                --------
+                    None
+                '''
         with open(name, 'w+') as file:
             yaml.dump(self.model_dump(), file)
+
 
 class ColonyMoon(Mission):
     size: int
@@ -43,19 +74,22 @@ class ColonyMoon(Mission):
     def __str__(self) -> str:
         return f'{super().__str__()}CLMN'
 
+
 class GalaxyTwo(Mission):
     galaxy_name: str
 
     def __str__(self) -> str:
         return f'{super().__str__()}GALXONE'
 
+
 class OrbitOne(Mission):
-    model_config = ConfigDict(use_enum_values = True)
+    model_config = ConfigDict(use_enum_values=True)
     satellite_name: str
     service_type: ServiceType
 
     def __str__(self) -> str:
         return f'{super().__str__()}ORBONE'
+
 
 class Unkn(Mission):
 
@@ -86,14 +120,24 @@ class Unkn(Mission):
     def process_id(self) -> str:
         return str(uuid.uuid4())
 
-class VacMars(Mission):
 
+class VacMars(Mission):
     number_of_passengers: int
     ticket_price: float
 
     @computed_field
     @property
     def total_sales(self) -> float:
+        '''
+        To return the number of passenger and ticket price
+
+        Parameters:
+        -----------
+
+        Returns:
+        --------
+        float
+        '''
         return self.number_of_passengers * self.ticket_price
 
     def __str__(self) -> str:
