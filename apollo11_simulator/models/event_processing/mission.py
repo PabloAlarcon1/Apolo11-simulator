@@ -19,7 +19,7 @@ class Mission(BaseModel):
     @property
     def mission(self) -> str:
         '''
-                To return the name of the class
+                Returns the name of the class
 
                 Parameters:
                 -----------
@@ -55,7 +55,7 @@ class Mission(BaseModel):
 
     def generate_event(self, name: str) -> None:
         '''
-                To create a file with a name received to parameter
+                Creates a yaml file with a name received as parameter
 
                 Parameters:
                 name
@@ -118,6 +118,9 @@ class Unkn(Mission):
     @computed_field
     @property
     def process_id(self) -> str:
+    '''
+    Generates an UUID value as process id
+    '''
         return str(uuid.uuid4())
 
 
@@ -129,7 +132,7 @@ class VacMars(Mission):
     @property
     def total_sales(self) -> float:
         '''
-        To return the number of passenger and ticket price
+        Returns the total sales as product of number of passenger and ticket price
 
         Parameters:
         -----------

@@ -5,10 +5,10 @@ import pandas as pd
 
 class TaskCalculator:
     """
-        A class for performing various tasks and analyses on a DataFrame of events.
+        Class for performing multiple reporting operations through pandas DataFrames.
 
         Parameters:
-        - events (pd.DataFrame): The DataFrame containing event data."""
+        - events (pd.DataFrame): DataFrame containing event data."""
 
     def __init__(self, events: pd.DataFrame) -> None:
         self.__events = events
